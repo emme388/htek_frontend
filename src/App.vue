@@ -36,7 +36,7 @@
         text
       >
         <span class="mr-2 btn-text">Logga ut</span>
-        <v-icon>mdi-close-circle</v-icon>
+        <v-icon>mdi-logout</v-icon>
       </v-btn>
 
       <v-btn
