@@ -5,6 +5,7 @@
         <v-calendar
           @click:day="showEvent"
           @click:date="showEvent"
+          :weekdays="weekday"
           :now="today"
           :value="today"
           color="primary"
@@ -84,7 +85,18 @@ export default {
       return imgPath
     },
     showEvent ({ nativeEvent, date }) {
-      console.log(date, nativeEvent)
+      if(this.events[date] === undefined) {
+        return;
+      }
+      if(this.hackyClickCounter < 3) {
+        setTimeout(() => {
+          nativeEvent.path[0].click();
+        }, 50);
+        this.hackyClickCounter++;
+      } else {
+        this.hackyClickCounter = 0;
+      }
+
       const open = () => {
         this.selectedDay = date
         this.selectedElement = nativeEvent.target
@@ -110,12 +122,15 @@ export default {
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data: () => ({
-    today: new Date(),
+    // it works with only new Date() but complains if it's not a string in this format
+    today: new Date().toISOString().split("T")[0],
     events: null,
     colors: ['#FFF'],
     category: ['Alla'],
     selectedDay: {},
     selectedElement: null,
+    weekday:  [1, 2, 3, 4, 5, 6, 0],
+    hackyClickCounter: 0
   })
 }
 </script>
@@ -149,7 +164,8 @@ export default {
 }
 
 .imgholder:hover {
-  width: 88%;
+  width: 90%;
+  cursor: pointer;
 }
 
 .theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday{
@@ -181,6 +197,13 @@ export default {
   margin-left: 10px;
 }
 
+@media only screen and (max-width: 600px) {
+  .imgholder {
+    flex-direction: column;
+    width: 100%;
+    height: 60%;
+  }
+}
 </style>
 <!--
 <v-card-text class="text-left"

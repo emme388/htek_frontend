@@ -29,7 +29,7 @@
               label="password"
               hint="At least 8 characters"
               :append-icon="hidepw ? 'mdi-eye' : 'mdi-eye-off'"
-              :append-icon-cb="() => (hidepw = !hidepw)"
+              @click:append="() => (hidepw = !hidepw)"
               :type="hidepw ? 'password' : 'text'"
               outlined
               required>

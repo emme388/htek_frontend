@@ -141,7 +141,7 @@ const actions = {
   },
   signOut ({ commit }) {
     commit('signOut')
-    router.push('/home')
+    router.push('/about')
   },
   newPassword ({ state, commit, dispatch }, newPassword) {
     state.cognitoUser.completeNewPasswordChallenge(newPassword, [], {

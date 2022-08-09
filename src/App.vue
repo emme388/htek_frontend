@@ -18,11 +18,11 @@
         <v-spacer></v-spacer>
 
         <v-btn to="/about" text>
-          <span class="mr-2">H-kalender</span>
+          <span class="mr-2 btn-text">H-kalender</span>
           <v-icon>mdi-calendar-month</v-icon>
         </v-btn>
         <v-btn href="https://htek.se/" text>
-          <span class="mr-2">H-Sektionen</span>
+          <span class="mr-2 btn-text">H-Sektionen</span>
           <v-icon>mdi-alpha-h-box</v-icon>
         </v-btn>
 
@@ -31,10 +31,19 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        to="/signIn"
+        v-if="getUserName.length > 0"
+        @click="signOut"
         text
       >
-        <span class="mr-2">Kommitté-aktiv</span>
+        <span class="mr-2 btn-text">Logga ut</span>
+        <v-icon>mdi-close-circle</v-icon>
+      </v-btn>
+
+      <v-btn
+        @click="navAdmin"
+        text
+      >
+        <span class="mr-2 btn-text">Kommitté-aktiv</span>
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
@@ -60,6 +69,26 @@ export default Vue.extend({
   }),
   created() {
     this.$store.dispatch('tryAutoSignIn')
+  },
+  computed: {
+    getUserName () {
+      console.log(this.$store)
+      return this.$store.getters.getUserName;
+    },
+  },
+
+  methods: {
+    navAdmin (){
+      if(this.getUserName.length > 0) {
+        this.$router.push('/createEvent')
+      }else {
+        this.$router.push('/signIn')
+      }
+    },
+
+    signOut (){
+      this.$store.dispatch('signOut')
+    }
   }
 })
 </script>
@@ -71,5 +100,11 @@ export default Vue.extend({
 }
 .footerHolder {
   background-color: #ee2c82;
+}
+
+@media only screen and (max-width: 600px) {
+  .btn-text {
+    display: none;
+  }
 }
 </style>
