@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <v-card-text style="font-size:3em" class="text-center">H-sektionens kalender</v-card-text>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>hello</h1>
   </div>
 </template>
 

@@ -1,5 +1,16 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <eventCalendar />
   </div>
 </template>
+
+<script>
+import eventCalendar from '@/components/eventCalendar'
+
+export default {
+  name: 'About',
+  components: {
+    eventCalendar
+  }
+}
+</script>
