@@ -1,10 +1,11 @@
 <template>
-  <v-row>
-    <v-col>
-      <v-sheet height="600" >
+  <v-row class="rowCol">
+    <v-col class="rowCol fixedPadding">
+      <v-sheet height="600" class="backgroundSheet" >
         <v-calendar
-          @click:day="showEvent"
+          class="calendar"
           @click:date="showEvent"
+          @click:day="showEvent"
           :weekdays="weekday"
           :now="today"
           :value="today"
@@ -22,7 +23,7 @@
                     alt="logo"
                     class="logo"
                     :src=getImgString(event.image)
-                    width="30%"
+                    width="33%"
                   />
                 </div>
               </template>
@@ -60,11 +61,28 @@
             <v-card-text>
               <span v-html="event.shortDesc"></span>
             </v-card-text>
+            <v-card-actions >
+              <v-btn v-if="getUserName.length > 0 && compUserName(event.host)"
+                  icon
+                  class="deleteButton"
+                  @click="deleteEvent(event.date, event.id)"
+                  color="#f573ad"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+              <v-btn
+                  icon
+                  class="deleteButton"
+                  @click="moreInfo(event.yearMonth, event.id)"
+                  color="#f573ad"
+              >
+                <v-icon>mdi-information</v-icon>
+              </v-btn>
+            </v-card-actions>
           </div>
           </v-card>
         </v-menu>
       </v-sheet>
-      {{ getUserName }}
     </v-col>
   </v-row>
 </template>
@@ -88,6 +106,7 @@ export default {
       if(this.events[date] === undefined) {
         return;
       }
+      console.log(nativeEvent)
       if(this.hackyClickCounter < 3) {
         setTimeout(() => {
           nativeEvent.path[0].click();
@@ -96,7 +115,6 @@ export default {
       } else {
         this.hackyClickCounter = 0;
       }
-
       const open = () => {
         this.selectedDay = date
         this.selectedElement = nativeEvent.target
@@ -112,11 +130,51 @@ export default {
 
       nativeEvent.stopPropagation()
     },
+
+    compUserName (eventHost){
+
+        let user = this.getUserName;
+        let userHost
+        if (user.split('@').pop().split('.')[0] === 'hd') {
+          userHost = 'hd'
+        } else if(user.split('@').pop().split('.')[0] === 'pubf')  {
+          userHost = 'pubf'
+        } else {
+          userHost = user.match(/\..+(?=@)/)[0].substring(1)
+        }
+        return userHost === eventHost;
+    },
+
+    async deleteEvent (date, id) {
+      const payload = {
+        yearMonth: date.substr(0, 7),
+        id: id
+      }
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + this.$store.getters.getIdentityToken
+        },
+        body: JSON.stringify(payload)
+      };
+      const response = await fetch("https://a61zy252h4.execute-api.eu-north-1.amazonaws.com/dev/deleteItem", requestOptions);
+      const data = await response.json().then(location.reload());
+
+    },
+
+    moreInfo(yearMonth, id){
+      
+      this.$router.push("/event?yearMonth=" + yearMonth + "&uuid=" + id);
+
+    }
+    
   },
+
+
 
   computed: {
     getUserName() {
-      console.log(this.$store)
       return this.$store.getters.getUserName;
     }
   },
@@ -136,6 +194,10 @@ export default {
 </script>
 
 <style>
+
+body {
+  background-color: #ee2c82;
+}
 
 .eventToolbar {
   border: 5px dotted #ee2c82;
@@ -161,6 +223,21 @@ export default {
 .logo {
   float: left;
   margin: auto;
+}
+
+.rowCol {
+  color: #ee2c82;
+  background-color: #ee2c82;
+}
+
+.calendar {
+  color: #ee2c82;
+  background-color: #ee2c82;
+}
+
+.backgroundSheet {
+  color: #ee2c82;
+  background-color: #ee2c82;
 }
 
 .imgholder:hover {
@@ -195,6 +272,14 @@ export default {
 
 .toolbarTitle {
   margin-left: 10px;
+}
+
+.deleteButton {
+  float: left;
+}
+
+.fixedPadding {
+  padding: 14px 0px 0px 12px;
 }
 
 @media only screen and (max-width: 600px) {

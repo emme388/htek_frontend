@@ -14,6 +14,7 @@
             color="#ffffff"
             required
             dark
+            outlined
           ></v-text-field>
         </v-col>
 
@@ -41,6 +42,7 @@
                 v-on="on"
                 dark
                 color="#FFFFFF"
+                outlined
               ></v-text-field>
             </template>
             <v-date-picker
@@ -92,6 +94,7 @@
                 v-on="on"
                 dark
                 color="#FFFFFF"
+                outlined
               ></v-text-field>
             </template>
             <v-time-picker
@@ -138,7 +141,6 @@
 
       </v-row>
     </v-container>
-    {{ getUserName }}
   </v-form>
 </div>
 </template>
@@ -164,7 +166,11 @@ export default {
         body: JSON.stringify(payload)
       };
       const response = await fetch("https://a61zy252h4.execute-api.eu-north-1.amazonaws.com/dev/putEvent", requestOptions);
-      const data = await response.json();
+      const data = await response.json().then(this.$router.push('/'))
+    },
+
+    pushHome () {
+      this.$router.push('/about')
     },
 
     fixedDate(date, time){

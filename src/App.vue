@@ -11,13 +11,12 @@
           class="shrink mr-2"
           contain
           src="@/assets/Htek_logga.png"
-          transition="scale-transition"
           width="50"
         />
 
         <v-spacer></v-spacer>
 
-        <v-btn to="/about" text>
+        <v-btn to="/" text>
           <span class="mr-2 btn-text">H-kalender</span>
           <v-icon>mdi-calendar-month</v-icon>
         </v-btn>
@@ -25,6 +24,7 @@
           <span class="mr-2 btn-text">H-Sektionen</span>
           <v-icon>mdi-alpha-h-box</v-icon>
         </v-btn>
+
 
       </div>
 
@@ -43,7 +43,7 @@
         @click="navAdmin"
         text
       >
-        <span class="mr-2 btn-text">Kommitté-aktiv</span>
+        <span class="mr-2 btn-text">{{ displayName() }}</span>
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
@@ -88,6 +88,14 @@ export default Vue.extend({
 
     signOut (){
       this.$store.dispatch('signOut')
+    },
+
+    displayName (){
+      if(this.getUserName.length > 0) {
+        return (this.getUserName.split('@')[0])
+      }else{
+        return "Kommitté-aktiv"
+      }
     }
   }
 })
@@ -100,6 +108,13 @@ export default Vue.extend({
 }
 .footerHolder {
   background-color: #ee2c82;
+}
+
+.displayName {
+  font-family: "Roboto", sans-serif;
+  font-weight: 420;
+  width: 60%;
+
 }
 
 @media only screen and (max-width: 600px) {

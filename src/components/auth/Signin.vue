@@ -6,8 +6,12 @@
           <div>
             <h4 class="headline mb-0">Logga in med Htek-mail</h4>
           </div>
+            
         </v-card-title>
         <v-card-text>
+          <v-alert v-if="pwSuccess"dismissible class="mb-4 mt-0" type="success">
+            Lösenord ändrat!
+          </v-alert>
           <v-alert outline type="error" dismissible class="mb-4 mt-0" v-model="showerr">
             {{ errmsg }}
             <v-btn v-if="resend" color="primary" flat small :to="'/resend'">Re-send Confirmation</v-btn>
@@ -26,8 +30,8 @@
               autocomplete="current-password"
               v-model="password"
               :rules="passRules"
-              label="password"
-              hint="At least 8 characters"
+              label="Lösenord"
+              hint="Minst 8 tecken"
               :append-icon="hidepw ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="() => (hidepw = !hidepw)"
               :type="hidepw ? 'password' : 'text'"
@@ -43,11 +47,11 @@
             class="mt-3 mb-3 white--text"
             color="primary">
             Logga in
-            <span slot="loader">Connecting...</span>
+            <span slot="loader">Laddar...</span>
           </v-btn>
         </v-card-text>
         <v-card-actions class="ml-2 mb-2">
-          <v-btn flat small :to="'/forgot'">Forgot Password?</v-btn>
+          <v-btn flat small :to="'/forgot'">Glömt lösenord?</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
@@ -63,8 +67,10 @@ export default {
     'app-wrapper': wrapper,
     'app-terms': terms
   },
+
   data: function () {
     return {
+      pwSuccess: false,
       callback: false,
       showerr: false,
       resend: false,
@@ -89,6 +95,11 @@ export default {
       loading: false
     }
   },
+  //fixa falsy värde, kolla så att parameter är "true" och inget annat
+  created () {
+    this.pwSuccess = this.$route.query.success 
+  },
+
   computed: {
     errcode: function () {
       return this.$store.state.auth.errcode

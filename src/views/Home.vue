@@ -1,19 +1,31 @@
 <template>
   <div class="home">
-    <v-card-text style="font-size:3em" class="text-center">H-sektionens kalender</v-card-text>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <h1>hello</h1>
+    <eventCalendar />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import eventCalendar from '@/components/eventCalendar'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    eventCalendar
   }
 }
 </script>
+
+<style>
+.theme--light.v-calendar-weekly .v-calendar-weekly__day {
+  border-right: #ee2c82 3px solid;
+  border-bottom: #ee2c82 3px solid;
+  color: #000000;
+}
+
+.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday {
+  border-right: #ee2c82 3px solid;
+  color: #000000;
+}
+
+
+</style>
