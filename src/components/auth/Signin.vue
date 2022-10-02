@@ -9,7 +9,7 @@
             
         </v-card-title>
         <v-card-text>
-          <v-alert v-if="pwSuccess"dismissible class="mb-4 mt-0" type="success">
+          <v-alert v-if="pwSuccess" dismissible class="mb-4 mt-0" type="success">
             Lösenord ändrat!
           </v-alert>
           <v-alert outline type="error" dismissible class="mb-4 mt-0" v-model="showerr">
